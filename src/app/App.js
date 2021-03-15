@@ -14,7 +14,6 @@ const App = () => {
   const [genreFiltered, setGenreFiltered] = useState({});
   const [isloaded, setLoaded] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [likesState, setLikesState] = useState(false);
   const groupByCategory = (items) => items.reduce((acc, song) => {
     const { genre } = song;
     if (!acc[genre]) {
@@ -27,15 +26,28 @@ const App = () => {
   const syncSongs = async () => {
     setLoaded(true);
     setLoading(true);
-    const [myLikes, songs] = await getSongs();
-    console.log(myLikes);
+    const songs = await getSongs();
     setAllSongs(songs);
-    setLikesState(myLikes);
     setLoading(false);
     const genreFilteredSongs = groupByCategory(songs);
     setGenreFiltered(genreFilteredSongs);
   };
   const switchHeart = async (id) => {
+    const newState = allSongs.map((song) => {
+      const songLike = song.like;
+      let count;
+      if (songLike) {
+        count = song.likes_count - 1;
+      } else {
+        count = song.likes_count + 1;
+      }
+      return (song.id === id ? {
+        ...song,
+        likes_count: count,
+        like: !song.like,
+      } : song);
+    });
+    setAllSongs(newState);
     const likes = await axios.get(`/api/records/${id}/likes`, {
       headers: { Authorization: `Bearer ${token}` },
     });

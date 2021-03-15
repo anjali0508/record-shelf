@@ -6,13 +6,11 @@ export const getSongs = async () => {
   const songsResponse = await axios.get('/api/records', {
     headers: { Authorization: `Bearer ${token}` },
   });
-  const myLikes = [];
   console.log(songsResponse);
   let songs = songsResponse.data.data.map(async (song) => {
     const likes = await axios.get(`/api/records/${song.id}/likes`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    myLikes.push(likes.data.data.like);
     return ({
       id: song.id,
       name: song.name,
@@ -25,5 +23,5 @@ export const getSongs = async () => {
   });
   songs = await Promise.all(songs);
   console.log(songs);
-  return [myLikes, songs];
+  return songs;
 };
