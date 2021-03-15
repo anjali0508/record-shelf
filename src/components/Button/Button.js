@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const Button = ({ text, sync }) => (<button onClick={sync} type="button">{text}</button>);
+import styles from './Button.module.css';
+
+export const Button = ({ text, sync }) => (<button className={styles.blue_button} onClick={sync} type="button">{text}</button>);
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
