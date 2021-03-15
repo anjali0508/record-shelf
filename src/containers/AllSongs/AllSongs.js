@@ -22,6 +22,7 @@ export const AllSongs = ({ syncSongs, allSongs, switchHeart }) => {
         <ul className={styles.cards}>
           {allSongs.map((song) => (
             <SongCard
+              genre={song.genre}
               id={song.id}
               key={song.id}
               img={song.img}
@@ -29,7 +30,7 @@ export const AllSongs = ({ syncSongs, allSongs, switchHeart }) => {
               artist={song.artist}
               likesCount={song.likes_count}
               like={song.like}
-              switchHeart={() => switchHeart(song.id)}
+              switchHeart={() => switchHeart(song.id, song.genre)}
             />
           ))}
         </ul>

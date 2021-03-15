@@ -54,11 +54,7 @@ const App = () => {
     const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !songLike }, {
       headers: { Authorization: `Bearer ${token}` },
     });
-  };
-
-  const switchHeart = async (id) => {
-    let songLike;
-    const newState = allSongs.map((song) => {
+    const newStateSong = allSongs.map((song) => {
       songLike = song.like;
       let count;
       if (songLike) {
@@ -72,11 +68,9 @@ const App = () => {
         like: !song.like,
       } : song);
     });
-    setAllSongs(newState);
-    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !songLike }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    setAllSongs(newStateSong);
   };
+
   if (!isloaded) {
     return (
       <>
@@ -101,7 +95,7 @@ const App = () => {
               <AllSongs
                 allSongs={allSongs}
                 syncSongs={syncSongs}
-                switchHeart={switchHeart}
+                switchHeart={switchCategoryHeart}
               />
             )
               : <div style={{ textAlign: 'center', marginTop: '20%' }}>Loading...</div>}
