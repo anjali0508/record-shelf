@@ -14,7 +14,7 @@ const App = () => {
   const [genreFiltered, setGenreFiltered] = useState({});
   const [isloaded, setLoaded] = useState(false);
   const [isLoading, setLoading] = useState(false);
-
+  const [likesState, setLikesState] = useState(false);
   const groupByCategory = (items) => items.reduce((acc, song) => {
     const { genre } = song;
     if (!acc[genre]) {
@@ -27,8 +27,10 @@ const App = () => {
   const syncSongs = async () => {
     setLoaded(true);
     setLoading(true);
-    const songs = await getSongs();
+    const [myLikes, songs] = await getSongs();
+    console.log(myLikes);
     setAllSongs(songs);
+    setLikesState(myLikes);
     setLoading(false);
     const genreFilteredSongs = groupByCategory(songs);
     setGenreFiltered(genreFilteredSongs);

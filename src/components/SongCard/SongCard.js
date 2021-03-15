@@ -19,7 +19,7 @@ export const SongCard = ({
             <p className={styles.card_text}>{artist}</p>
           </div>
           <div className={styles.column_right}>
-            {!like ? <img onClick={() => switchHeart({ id })} className={styles.heart_image} alt="likes" src={heartGrey} />
+            {!like ? <img onClick={() => { console.log('ji'); switchHeart({ id }); }} className={styles.heart_image} alt="likes" src={heartGrey} />
               : <img className={styles.heart_image} alt="likes" src={heartRed} />}
             <p className={styles.likes_count}>{likesCount}</p>
           </div>
