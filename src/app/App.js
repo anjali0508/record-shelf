@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
+import { Navbar } from '../components/Navbar/Navbar';
 
 const App = () => {
   const [isLoaded, setLoaded] = useState(false);
@@ -7,7 +8,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <div>Hello</div>
+      <Navbar />
     </div>
   );
 };

@@ -1,0 +1,19 @@
+nav {
+  color: white;
+  background-color: #38497e;
+}
+nav ul {
+  margin: 0;
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+}
+nav li {
+  color: white;
+  margin-right: 5px;
+  list-style-type: none;
+  text-decoration-style: none;
+  font-size: large;
+  padding-left: 10px;
+  font-weight: 300;
+}
