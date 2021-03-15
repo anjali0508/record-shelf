@@ -34,3 +34,21 @@ html {
 .column_right {
   float: right;
 }
+
+.genre_type {
+  position: relative;
+  padding: 2rem 1rem;
+}
+
+.blue_button {
+  background-color: #4c63aa;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  font-size: x-large;
+  padding: 10px 40px;
+  position: absolute;
+  top: 40%;
+  left: 8rem;
+}

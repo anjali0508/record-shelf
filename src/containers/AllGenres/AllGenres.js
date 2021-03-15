@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import styles from './AllGenres.module.css';
 import icon from '../../assets/images/icon-grid.svg';
 import { SongCard } from '../../components/SongCard/SongCard';
+import { Button } from '../../components/Button/Button';
 
 export const AllGenres = ({ genreFilteredSongs, switchHeart }) => {
   const history = useHistory();
@@ -20,10 +21,11 @@ export const AllGenres = ({ genreFilteredSongs, switchHeart }) => {
         <br />
         { Object.keys(genreFilteredSongs).map((category) => (
           <React.Fragment key={category}>
-            <img src={`../../../images/genre-${category}.png`} alt="genre" />
-            <h2>{category}</h2>
+            <div className={styles.genre_type}>
+              <img className={styles.genre_type_img} src={`../../../images/genre-${category}.png`} alt="genre" />
+              <button type="button" className={styles.blue_button}>{category}</button>
+            </div>
             <ul className={styles.cards}>
-
               {genreFilteredSongs[category].map((song) => (
                 <SongCard
                   id={song.id}
