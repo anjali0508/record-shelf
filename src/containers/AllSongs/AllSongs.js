@@ -8,13 +8,40 @@ const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYjcwNWIwMi00OWJi
 export const AllSongs = () => {
   const [allSongs, setAllSongs] = useState([]);
   const [isloaded, setLoaded] = useState(false);
+
   const syncSongs = async () => {
-    const songs = await axios.get('/api/records', {
+    const songsResponse = await axios.get('/api/records', {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setAllSongs(songs.data.data);
+    let songs = songsResponse.data.data.map(async (song) => {
+      const likes = await axios.get(`/api/records/${song.id}/likes`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return ({
+        id: song.id,
+        name: song.name,
+        img: song.albumArtUrl,
+        artist: song.artist.name,
+        likes_count: likes.data.data.count,
+        like: likes.data.data.like,
+      });
+    });
+    songs = await Promise.all(songs);
+    setAllSongs(songs);
     setLoaded(true);
   };
+
+  const switchHeart = async (id) => {
+    const likes = await axios.get(`/api/records/${id}/likes`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const { like } = likes.data.data;
+    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !like }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(reponse);
+  };
+
   return !isloaded ? (
     <EmptyComponent sync={syncSongs} />
   ) : (
@@ -23,7 +50,16 @@ export const AllSongs = () => {
         <h1>all songs</h1>
         <ul className={styles.cards}>
           {allSongs.map((song) => (
-            <SongCard img={song.albumArtUrl} name={song.name} artist={song.artist.name} />
+            <SongCard
+              id={song.id}
+              key={song.id}
+              img={song.img}
+              name={song.name}
+              artist={song.artist}
+              likesCount={song.likes_count}
+              like={song.like}
+              switchHeart={() => switchHeart(song.id)}
+            />
           ))}
         </ul>
       </div>

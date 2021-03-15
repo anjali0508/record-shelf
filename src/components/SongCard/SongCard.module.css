@@ -55,3 +55,28 @@
   font-weight: 700;
   padding: 0;
 }
+
+.row {
+  display: flex;
+  width: 100%;
+}
+.column_left {
+  width: 90%;
+}
+
+.column_right {
+  float: right;
+}
+
+.heart_image {
+  position: absolute;
+  width: 2rem;
+  cursor: pointer;
+}
+
+.likes_count {
+  position: relative;
+  left: 11px;
+  bottom: 0.6rem;
+  cursor: pointer;
+}
