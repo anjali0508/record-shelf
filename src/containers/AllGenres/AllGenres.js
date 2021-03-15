@@ -10,7 +10,6 @@ import { Button } from '../../components/Button/Button';
 
 export const AllGenres = ({ genreFilteredSongs, switchHeart }) => {
   const history = useHistory();
-  console.log(genreFilteredSongs);
   return (
     <>
       <div className={styles.main}>
