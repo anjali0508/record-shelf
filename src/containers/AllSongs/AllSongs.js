@@ -1,53 +1,22 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import styles from './AllSongs.module.css';
 import { EmptyComponent } from '../../components/Empty/Empty';
 import { SongCard } from '../../components/SongCard/SongCard';
+import icon from '../../assets/images/icon-genre.svg';
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYjcwNWIwMi00OWJiLTQ2OTYtOTNmOC1iZjAyM2I5ZGM0OGEiLCJuYW1lIjoiQW5qYWxpIiwicm9sZSI6MCwic3ViamVjdCI6IlRlY2ggVW5pdiAyMDIxIiwiZWFzdGVyX2VnZyI6Ikdvb2QgbHVjayEiLCJhdWQiOiJtdXNpY3JlY29yZHMudGVjaHVuaXYuY29tIiwibmJmIjoxNjE1Nzg0MzkwLCJleHAiOjE2MTgzNzYzOTAsImlhdCI6MTYxNTc4NDM5MCwiaXNzIjoiTXVzaWMgUmVjb3JkcyJ9.uXutfzQHN1Chfx8EbNakHayYDUEhZnpM8-fxBbgG4wg';
-export const AllSongs = () => {
-  const [allSongs, setAllSongs] = useState([]);
-  const [isloaded, setLoaded] = useState(false);
+export const AllSongs = ({ syncSongs, allSongs, switchHeart }) => {
+  const history = useHistory();
 
-  const syncSongs = async () => {
-    const songsResponse = await axios.get('/api/records', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    let songs = songsResponse.data.data.map(async (song) => {
-      const likes = await axios.get(`/api/records/${song.id}/likes`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return ({
-        id: song.id,
-        name: song.name,
-        img: song.albumArtUrl,
-        artist: song.artist.name,
-        likes_count: likes.data.data.count,
-        like: likes.data.data.like,
-      });
-    });
-    songs = await Promise.all(songs);
-    setAllSongs(songs);
-    setLoaded(true);
-  };
-
-  const switchHeart = async (id) => {
-    const likes = await axios.get(`/api/records/${id}/likes`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const { like } = likes.data.data;
-    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !like }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    console.log(reponse);
-  };
-
-  return !isloaded ? (
-    <EmptyComponent sync={syncSongs} />
-  ) : (
+  return (
     <>
       <div className={styles.main}>
         <h1>all songs</h1>
+        <img onClick={() => history.push('/genres')} src={icon} alt="toggle" />
         <ul className={styles.cards}>
           {allSongs.map((song) => (
             <SongCard
@@ -65,4 +34,18 @@ export const AllSongs = () => {
       </div>
     </>
   );
+};
+
+const Song = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  artist: PropTypes.string.isRequired,
+  likesCount: PropTypes.number.isRequired,
+  like: PropTypes.bool.isRequired,
+});
+AllSongs.propTypes = {
+  syncSongs: PropTypes.func.isRequired,
+  switchHeart: PropTypes.func.isRequired,
+  allSongs: PropTypes.arrayOf(Song).isRequired,
 };
