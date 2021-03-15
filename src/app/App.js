@@ -33,8 +33,9 @@ const App = () => {
     setGenreFiltered(genreFilteredSongs);
   };
   const switchCategoryHeart = async (id, category) => {
+    let songLike;
     const newState = genreFiltered[category].map((song) => {
-      const songLike = song.like;
+      songLike = song.like;
       let count;
       if (songLike) {
         count = song.likes_count - 1;
@@ -50,19 +51,15 @@ const App = () => {
     const newGenreFiltered = { ...genreFiltered };
     newGenreFiltered[category] = newState;
     setGenreFiltered(newGenreFiltered);
-
-    const likes = await axios.get(`/api/records/${id}/likes`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const { like } = likes.data.data;
-    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !like }, {
+    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !songLike }, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
   const switchHeart = async (id) => {
+    let songLike;
     const newState = allSongs.map((song) => {
-      const songLike = song.like;
+      songLike = song.like;
       let count;
       if (songLike) {
         count = song.likes_count - 1;
@@ -76,12 +73,7 @@ const App = () => {
       } : song);
     });
     setAllSongs(newState);
-
-    const likes = await axios.get(`/api/records/${id}/likes`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const { like } = likes.data.data;
-    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !like }, {
+    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !songLike }, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
