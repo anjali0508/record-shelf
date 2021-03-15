@@ -32,6 +32,34 @@ const App = () => {
     const genreFilteredSongs = groupByCategory(songs);
     setGenreFiltered(genreFilteredSongs);
   };
+  const switchCategoryHeart = async (id, category) => {
+    const newState = genreFiltered[category].map((song) => {
+      const songLike = song.like;
+      let count;
+      if (songLike) {
+        count = song.likes_count - 1;
+      } else {
+        count = song.likes_count + 1;
+      }
+      return (song.id === id ? {
+        ...song,
+        likes_count: count,
+        like: !song.like,
+      } : song);
+    });
+    const newGenreFiltered = { ...genreFiltered };
+    newGenreFiltered[category] = newState;
+    setGenreFiltered(newGenreFiltered);
+
+    const likes = await axios.get(`/api/records/${id}/likes`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const { like } = likes.data.data;
+    const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !like }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
   const switchHeart = async (id) => {
     const newState = allSongs.map((song) => {
       const songLike = song.like;
@@ -58,7 +86,12 @@ const App = () => {
     });
   };
   if (!isloaded) {
-    return <EmptyComponent sync={syncSongs} />;
+    return (
+      <>
+        <Navbar />
+        <EmptyComponent sync={syncSongs} />
+      </>
+    );
   }
   return (
     <div className="App">
@@ -68,7 +101,7 @@ const App = () => {
           <Route path="/genres" exact>
             <AllGenres
               genreFilteredSongs={genreFiltered}
-              switchHeart={switchHeart}
+              switchHeart={switchCategoryHeart}
             />
           </Route>
           <Route path="/" exact>
