@@ -1,4 +1,3 @@
-import './App.css';
 import React, { useState, usEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -13,6 +12,7 @@ const App = () => {
   const [allSongs, setAllSongs] = useState([]);
   const [genreFiltered, setGenreFiltered] = useState({});
   const [isloaded, setLoaded] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const groupByCategory = (items) => items.reduce((acc, song) => {
     const { genre } = song;
@@ -24,6 +24,8 @@ const App = () => {
   }, {});
 
   const syncSongs = async () => {
+    setLoaded(true);
+    setLoading(true);
     const songsResponse = await axios.get('/api/records', {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -42,10 +44,9 @@ const App = () => {
         genre: song.genre.name,
       });
     });
-
     songs = await Promise.all(songs);
     setAllSongs(songs);
-    setLoaded(true);
+    setLoading(false);
     const genreFilteredSongs = groupByCategory(songs);
     setGenreFiltered(genreFilteredSongs);
   };
@@ -59,6 +60,9 @@ const App = () => {
     });
     console.log(reponse);
   };
+  if (!isloaded) {
+    return <EmptyComponent sync={syncSongs} />;
+  }
   return (
     <div className="App">
       <BrowserRouter>
@@ -71,14 +75,14 @@ const App = () => {
             />
           </Route>
           <Route path="/" exact>
-            {isloaded ? (
+            {!isLoading ? (
               <AllSongs
                 allSongs={allSongs}
                 syncSongs={syncSongs}
                 switchHeart={switchHeart}
               />
             )
-              : <EmptyComponent sync={syncSongs} />}
+              : <div style={{ textAlign: 'center', marginTop: '20%' }}>Loading...</div>}
           </Route>
         </Switch>
       </BrowserRouter>
