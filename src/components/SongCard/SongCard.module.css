@@ -1,6 +1,6 @@
 .cards_item {
   width: 100%;
-  padding: 0.3rem;
+  padding: 0.4rem;
 }
 
 @media (min-width: 40rem) {
@@ -16,7 +16,7 @@
 }
 
 .card {
-  box-shadow: 0 1.25rem 2.5rem -0.875rem rgba(124, 122, 122, 0.25);
+  box-shadow: 1rem 0.8rem 0.5rem -0.875rem rgba(104, 100, 100, 0.25);
   border-radius: 0.5rem;
 }
 
@@ -26,9 +26,16 @@
   align-items: flex-start;
   padding: 1rem;
   height: 12rem;
-  background-color: #dfdfdf;
   border-radius: 0.5rem;
   height: 20rem;
+}
+
+li:nth-child(even) .card_content {
+  background-color: #ababab;
+}
+
+li:nth-child(odd) .card_content {
+  background-color: #dfdfdf;
 }
 
 .card_image {
