@@ -33,7 +33,6 @@ const App = () => {
       const likes = await axios.get(`/api/records/${song.id}/likes`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(likes.data.data.count);
       return ({
         id: song.id,
         name: song.name,

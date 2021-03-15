@@ -1,54 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AllSongs should match snapshot 1`] = `
+exports[`App should match snapshot 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
       <div
-        class="main"
+        class="container"
       >
-        <div
-          class="row"
+        <p>
+          :((
+        </p>
+        <p>
+          Seems a bit empty in heree
+        </p>
+        <button
+          class="blue_button"
+          type="button"
         >
-          <h1
-            class="column_left"
-          >
-            all songs
-          </h1>
-          <img
-            alt="toggle"
-            class="column_right"
-            src="icon-genre.svg"
-          />
-        </div>
-        <ul
-          class="cards"
-        />
+          sync
+        </button>
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      class="main"
+      class="container"
     >
-      <div
-        class="row"
+      <p>
+        :((
+      </p>
+      <p>
+        Seems a bit empty in heree
+      </p>
+      <button
+        class="blue_button"
+        type="button"
       >
-        <h1
-          class="column_left"
-        >
-          all songs
-        </h1>
-        <img
-          alt="toggle"
-          class="column_right"
-          src="icon-genre.svg"
-        />
-      </div>
-      <ul
-        class="cards"
-      />
+        sync
+      </button>
     </div>
   </div>,
   "debug": [Function],

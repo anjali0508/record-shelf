@@ -6,7 +6,11 @@ import { AllSongs } from './AllSongs';
 
 describe(AllSongs.name, () => {
   test('should match snapshot', () => {
-    const container = render(<AllSongs />);
+    const container = render(<AllSongs
+      syncSongs={() => {}}
+      switchHeart={() => {}}
+      allSongs={[]}
+    />);
     expect(container).toMatchSnapshot();
   });
 });
