@@ -48,6 +48,7 @@ const App = () => {
       } : song);
     });
     setAllSongs(newState);
+
     const likes = await axios.get(`/api/records/${id}/likes`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -55,7 +56,6 @@ const App = () => {
     const reponse = await axios.patch(`/api/records/${id}/likes`, { like: !like }, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(reponse);
   };
   if (!isloaded) {
     return <EmptyComponent sync={syncSongs} />;
