@@ -31,6 +31,7 @@ const App = () => {
       const likes = await axios.get(`/api/records/${song.id}/likes`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(likes.data.data.count);
       return ({
         id: song.id,
         name: song.name,
@@ -41,6 +42,7 @@ const App = () => {
         genre: song.genre.name,
       });
     });
+
     songs = await Promise.all(songs);
     setAllSongs(songs);
     setLoaded(true);
@@ -63,7 +65,10 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path="/genres" exact>
-            <AllGenres genreFiltered={genreFiltered} />
+            <AllGenres
+              genreFilteredSongs={genreFiltered}
+              switchHeart={switchHeart}
+            />
           </Route>
           <Route path="/" exact>
             {isloaded ? (

@@ -15,8 +15,10 @@ export const AllSongs = ({ syncSongs, allSongs, switchHeart }) => {
   return (
     <>
       <div className={styles.main}>
-        <h1>all songs</h1>
-        <img onClick={() => history.push('/genres')} src={icon} alt="toggle" />
+        <div className={styles.row}>
+          <h1 className={styles.column_left}>all songs</h1>
+          <img className={styles.column_right} onClick={() => history.push('/genres')} src={icon} alt="toggle" />
+        </div>
         <ul className={styles.cards}>
           {allSongs.map((song) => (
             <SongCard
@@ -41,7 +43,7 @@ const Song = PropTypes.shape({
   img: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   artist: PropTypes.string.isRequired,
-  likesCount: PropTypes.number.isRequired,
+  likes_count: PropTypes.number.isRequired,
   like: PropTypes.bool.isRequired,
 });
 AllSongs.propTypes = {
