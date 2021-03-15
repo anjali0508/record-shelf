@@ -11,7 +11,17 @@ const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYjcwNWIwMi00OWJi
 
 const App = () => {
   const [allSongs, setAllSongs] = useState([]);
+  const [genreFiltered, setGenreFiltered] = useState({});
   const [isloaded, setLoaded] = useState(false);
+
+  const groupByCategory = (items) => items.reduce((acc, song) => {
+    const { genre } = song;
+    if (!acc[genre]) {
+      acc[genre] = [];
+    }
+    acc[genre].push(song);
+    return acc;
+  }, {});
 
   const syncSongs = async () => {
     const songsResponse = await axios.get('/api/records', {
@@ -28,13 +38,15 @@ const App = () => {
         artist: song.artist.name,
         likes_count: likes.data.data.count,
         like: likes.data.data.like,
+        genre: song.genre.name,
       });
     });
     songs = await Promise.all(songs);
     setAllSongs(songs);
     setLoaded(true);
+    const genreFilteredSongs = groupByCategory(songs);
+    setGenreFiltered(genreFilteredSongs);
   };
-
   const switchHeart = async (id) => {
     const likes = await axios.get(`/api/records/${id}/likes`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -51,7 +63,7 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path="/genres" exact>
-            <AllGenres />
+            <AllGenres genreFiltered={genreFiltered} />
           </Route>
           <Route path="/" exact>
             {isloaded ? (
@@ -62,7 +74,6 @@ const App = () => {
               />
             )
               : <EmptyComponent sync={syncSongs} />}
-
           </Route>
         </Switch>
       </BrowserRouter>
